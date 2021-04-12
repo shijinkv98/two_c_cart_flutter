@@ -1,0 +1,112 @@
+name: two_c_cart
+description: A new Flutter application.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+
+  cupertino_icons: ^1.0.2
+  carousel_slider: ^3.0.0
+  convex_bottom_bar: ^3.0.0
+  flutter_html: ^0.8.2
+  file_picker: ^3.0.1
+  provider: ^4.3.2+2
+  circular_countdown_timer: ^0.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+
+
+
+flutter:
+  fonts:
+    - family: opensans_regular
+      fonts:
+        - asset: fonts/opensans_regular.ttf
+    - family: opensans_bold
+      fonts:
+        - asset: fonts/opensans_bold.ttf
+    - family: opensans_bold_italic
+      fonts:
+        - asset: fonts/opensans_bold_italic.ttf
+    - family: opensans_extra_bold
+      fonts:
+        - asset: fonts/opensans_extra_bold.ttf
+    - family: opensans_extra_bold_italic
+      fonts:
+        - asset: fonts/opensans_extra_bold_italic.ttf
+    - family: opensans_italic
+      fonts:
+        - asset: fonts/opensans_italic.ttf
+    - family: opensans_light
+      fonts:
+        - asset: fonts/opensans_light.ttf
+    - family: opensans_light_italic
+      fonts:
+        - asset: fonts/opensans_light_italic.ttf
+    - family: opensans_semi_bold
+      fonts:
+        - asset: fonts/opensans_semi_bold.ttf
+    - family: opensans_semi_bold_italic
+      fonts:
+        - asset: fonts/opensans_semi_bold_italic.ttf
+
+
+
+  uses-material-design: true
+  assets:
+    - assets/images/splash.jpg
+    - assets/images/login_img.jpg
+    - assets/images/user.png
+    - assets/images/password.png
+    - assets/images/view.png
+    - assets/images/views.png
+    - assets/images/cart.png
+    - assets/images/home.png
+    - assets/images/favorite.png
+    - assets/images/favorate.png
+    - assets/images/profile.png
+    - assets/images/register.jpg
+    - assets/images/otp.jpg
+    - assets/images/logosmall.png
+    - assets/images/logo.png
+    - assets/images/location.png
+    - assets/images/delivery_bg.jpg
+    - assets/images/add.png
+    - assets/images/upload.png
+    - assets/images/offer.png
+    - assets/images/menu_icon.png
+    - assets/images/offerbg.png
+    - assets/images/offer_bg.jpg
+    - assets/images/bakery.jpg
+    - assets/images/category2.jpg
+    - assets/images/whl_bg.jpg
+    - assets/images/used.png
+    - assets/images/wholesale.png
+    - assets/images/home_feast.png
+    - assets/images/search.png
+    - assets/images/search2.png
