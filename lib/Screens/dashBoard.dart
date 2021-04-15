@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:two_c_cart/Screens/home.dart';
 import 'package:two_c_cart/Screens/wholesale.dart';
 import 'package:two_c_cart/Screens/wholesaleValidation.dart';
+import 'package:two_c_cart/Screens/wishlist.dart';
 import 'package:two_c_cart/helper/color_item)view.dart';
 import 'package:two_c_cart/helper/constants.dart';
 
@@ -41,7 +42,7 @@ class _State extends State<DashBoard>
               width: double.infinity,
               height: MediaQuery.of(context).size.height,
               color: white,
-              child: Center(child: WholeSaleValidationScreen()),
+              child: Center(child: WishlistScreen()),
             ),
             Container(
               width: double.infinity,

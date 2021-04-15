@@ -14,6 +14,7 @@ const Color pink = Color(0xFFee6bb7);
 const Color blue = Color(0xFF63a4f4);
 const Color violet = Color(0xFF9874f2);
 const Color hintColor = Color(0xFF9E9E9E);
+const Color green = Color(0xFF1dae11);
 const Color boxBorder = Color(0xFF9E9E9E);
 const Color loginButtonColor = Color(0xfffd1000);
 const Color bg = Color(0xffececec);
@@ -38,16 +39,35 @@ TextStyle getAppBarTitleStyle(){
 TextStyle getMainHeadingText(Color textColor){
    return TextStyle(color: textColor, fontFamily: 'opensans_semi_bold', fontSize: 16,letterSpacing: 0.5);
 }
+TextStyle getWishlistTitleText(Color textColor){
+   return TextStyle(color: textColor, fontFamily: 'opensans_semi_bold', fontSize: 14,letterSpacing: 0.5);
+}
 TextStyle getText(Color textColor){
    return TextStyle(color: textColor, fontFamily: 'opensans_bold', fontSize: 18,letterSpacing: 0.5,);
 }
 TextStyle getMainHeadingTextUnderLine(Color textColor){
    return TextStyle(color: textColor, fontFamily: 'opensans_bold', fontSize: 9,letterSpacing: 0.5,decoration: TextDecoration.underline,);
 }
+TextStyle getSmallText(Color textColor){
+   return TextStyle(color: textColor, fontFamily: 'opensans_regular', fontSize: 10,letterSpacing: 0.5,);
+}
 BoxDecoration homeBox = BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(2)),
     border: Border.all(color: boxBorder, width: 0.5));
 
 BoxDecoration getContentBox = BoxDecoration(
+    borderRadius: BorderRadius.only(topLeft:Radius.circular(25),topRight:Radius.circular(25)),color: Colors.white);
+BoxDecoration getContentBoxType2 = BoxDecoration(
+    boxShadow: [
+      BoxShadow(
+        color: colorPrimary,
+        offset: const Offset(
+          5.0,
+          5.0,
+        ),
+        blurRadius: 10.0,
+        spreadRadius: 3.0,
+      ), //BoxShadow
+          ],
     borderRadius: BorderRadius.only(topLeft:Radius.circular(25),topRight:Radius.circular(25)),color: Colors.white);
 
 BoxDecoration getCommonBox(Color fillcolor)
