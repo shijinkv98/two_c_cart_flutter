@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:two_c_cart/helper/constants.dart';
 
 
-class WishlistScreen extends StatefulWidget {
+class CartScreen extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<WishlistScreen> {
+class _LoginState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {

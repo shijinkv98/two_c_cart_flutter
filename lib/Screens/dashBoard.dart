@@ -1,5 +1,6 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:two_c_cart/Screens/cart.dart';
 import 'package:two_c_cart/Screens/home.dart';
 import 'package:two_c_cart/Screens/wholesale.dart';
 import 'package:two_c_cart/Screens/wholesaleValidation.dart';
@@ -60,52 +61,52 @@ class _State extends State<DashBoard>
               width: double.infinity,
               height: MediaQuery.of(context).size.height,
               color: Colors.blue,
-              child: Center(child: Text('5')),
+              child: Center(child: CartScreen()),
             ),
           ]),
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(70.0),
-            child: AppBar(
-
-              elevation: 0,
-              centerTitle:true,
-              automaticallyImplyLeading: false,
-              title:Container(
-                height: 78,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 1),
-                  child: IconButton(
-                      icon:Image.asset("assets/images/logo.png"),
-                       iconSize: 58,
-                        // color: primaryTextColor,
-                      ),
-                ),
-              ),
-              actions: [
-                // action button
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: IconButton(
-                    icon:Image.asset("assets/images/location.png"),
-                    iconSize: 20,
-                    // color: primaryTextColor,
-                  ),
-                ),
-              ],
-              leading: Padding(
-                padding: EdgeInsets.only(left: 0),
-                child: Builder(
-                  builder: (context) => IconButton(
-                    icon:ImageIcon(AssetImage("assets/images/menu_icon.png"),
-                            size: 25,
-                            color: primaryTextColor,
-                          ),
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // appBar: PreferredSize(
+          //   preferredSize: Size.fromHeight(70.0),
+          //   child: AppBar(
+          //
+          //     elevation: 0,
+          //     centerTitle:true,
+          //     automaticallyImplyLeading: false,
+          //     title:Container(
+          //       height: 78,
+          //       child: Padding(
+          //         padding: const EdgeInsets.only(top: 1),
+          //         child: IconButton(
+          //             icon:Image.asset("assets/images/logo.png"),
+          //              iconSize: 58,
+          //               // color: primaryTextColor,
+          //             ),
+          //       ),
+          //     ),
+          //     actions: [
+          //       // action button
+          //       Padding(
+          //         padding: const EdgeInsets.all(5.0),
+          //         child: IconButton(
+          //           icon:Image.asset("assets/images/location.png"),
+          //           iconSize: 20,
+          //           // color: primaryTextColor,
+          //         ),
+          //       ),
+          //     ],
+          //     leading: Padding(
+          //       padding: EdgeInsets.only(left: 0),
+          //       child: Builder(
+          //         builder: (context) => IconButton(
+          //           icon:ImageIcon(AssetImage("assets/images/menu_icon.png"),
+          //                   size: 25,
+          //                   color: primaryTextColor,
+          //                 ),
+          //           onPressed: () => Scaffold.of(context).openDrawer(),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
 
           drawer: getSideDrawer(),
           bottomNavigationBar:

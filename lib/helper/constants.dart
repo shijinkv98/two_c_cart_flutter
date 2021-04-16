@@ -98,19 +98,29 @@ NextPage(BuildContext context, nextpage) {
   Navigator.push(
       context, MaterialPageRoute(builder: (BuildContext context) => nextpage));
 }
-Widget getAppBar(String title,assetImage){
+Widget getAppBar(String title,assetImage,BuildContext context){
   return AppBar(
     backgroundColor: appBarColor,
     title: Text(title,style: getAppBarTitleStyle()),
     centerTitle: true,
     elevation: 0,
-    automaticallyImplyLeading: true,
+    leading: InkWell(
+      onTap: (){
+        // Navigator.pop(context,true);
+      },
+      child: Container(
+        padding: EdgeInsets.all(15),
+
+          child: ImageIcon(AssetImage('assets/images/back2.png'),size: 20,),),
+    ),
+    // automaticallyImplyLeading: true,
     actions:[
       Container(
         margin: EdgeInsets.only(right: right),
         child: ImageIcon(
           AssetImage(assetImage),
           color: white,
+          size: 20,
         ),
       ),
   ]

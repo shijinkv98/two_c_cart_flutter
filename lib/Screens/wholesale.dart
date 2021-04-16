@@ -16,7 +16,7 @@ class _LoginState extends State<WholeSaleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appBarColor,
-      appBar: getAppBar('WHOLESALE','assets/images/search2.png'),
+      appBar: getAppBar('WHOLESALE','assets/images/search2.png',context),
       body:  getContent(),
       bottomNavigationBar: getBottomNav(context),
     );

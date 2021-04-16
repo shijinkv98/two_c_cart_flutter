@@ -107,6 +107,49 @@ class _LoginState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.0),
+          child: AppBar(
+
+            elevation: 0,
+            centerTitle:true,
+            automaticallyImplyLeading: false,
+            title:Container(
+              height: 78,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 1),
+                child: IconButton(
+                    icon:Image.asset("assets/images/logo.png"),
+                     iconSize: 58,
+                      // color: primaryTextColor,
+                    ),
+              ),
+            ),
+            actions: [
+              // action button
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: IconButton(
+                  icon:Image.asset("assets/images/location.png"),
+                  iconSize: 20,
+                  // color: primaryTextColor,
+                ),
+              ),
+            ],
+            leading: Padding(
+              padding: EdgeInsets.only(left: 0),
+              child: Builder(
+                builder: (context) => IconButton(
+                  icon:ImageIcon(AssetImage("assets/images/menu_icon.png"),
+                          size: 25,
+                          color: primaryTextColor,
+                        ),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                ),
+              ),
+            ),
+          ),
+        ),
       body:  getContent(),
     );
   }

@@ -98,6 +98,7 @@ flutter:
     - assets/images/time.png
     - assets/images/wishlist.png
     - assets/images/home.png
+    - assets/images/back2.png
     - assets/images/favorite.png
     - assets/images/favorate.png
     - assets/images/profile.png
@@ -116,6 +117,7 @@ flutter:
     - assets/images/bakery.jpg
     - assets/images/category2.jpg
     - assets/images/whl_bg.jpg
+    - assets/images/add.jpg
     - assets/images/used.png
     - assets/images/wholesale.png
     - assets/images/home_feast.png
