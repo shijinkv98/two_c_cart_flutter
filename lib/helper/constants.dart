@@ -23,7 +23,17 @@ const double left = 15;
 const double right = 15;
 const double top = 15;
 const double register_icon_size = 10.0;
-
+Widget progressBar = InkWell(
+  child: SafeArea(
+    child: Center(
+      child: SizedBox(
+        child: CircularProgressIndicator(),
+        width: 60,
+        height: 60,
+      ),
+    ),
+  ),
+);
 const TextStyle hintStyleHome =TextStyle(color: hintColor, fontFamily: 'opensans_light', fontSize: 14);
 
 const TextStyle headlineText =TextStyle(color: primaryTextColor, fontFamily: 'opensans_semi_bold', fontSize: 15,letterSpacing: 1);
@@ -90,6 +100,7 @@ BoxDecoration getBgBox(assetImage)
         )
     );
 }
+
 NextPageReplacement(BuildContext context, nextpage) {
   Navigator.pushReplacement(
       context, MaterialPageRoute(builder: (BuildContext context) => nextpage));

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "298326654883",
+    "project_id": "c-cart-8ba5a",
+    "storage_bucket": "c-cart-8ba5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298326654883:android:68c1094eaba806b6a52416",
+        "android_client_info": {
+          "package_name": "com.twoccart.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "298326654883-8g0nig4loctkthgl6h7bhgs60jcrdfng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPX5h3f3tBeLwsGnA3CB0YxWKe7lIeEPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "298326654883-8g0nig4loctkthgl6h7bhgs60jcrdfng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

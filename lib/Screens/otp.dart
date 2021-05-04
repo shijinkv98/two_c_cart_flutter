@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:two_c_cart/Screens/PinFiels.dart';
 import 'package:two_c_cart/Screens/register.dart';
+import 'package:two_c_cart/helper/apiparams.dart';
+import 'package:two_c_cart/helper/apiurldata.dart';
 import 'package:two_c_cart/helper/constants.dart';
+import 'package:two_c_cart/network/ApiCall.dart';
 
 class OtpScreen extends StatefulWidget {
   @override
@@ -76,7 +79,22 @@ class _LoginState extends State<OtpScreen> {
       ),
     );
   }
+  Future<void> otpVerify(String otp,String phonenumber)
+  async {
+    // _updateNotifier.isProgressShown = true;
 
+    Map body = {
+      // name,email,phone_number,password
+      OTP: otp,
+      PHONE_NUMBER: phonenumber,
+    };
+    ApiCall()
+        .execute<String, Null>(OTP_VERIFICATION_URL, body).then((String result){
+      //  _updateNotifier.isProgressShown = false;
+
+    });
+
+  }
   Widget getResendOtp(){
     return Container(
       margin: EdgeInsets.only(top: 20,bottom: 20),

@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:two_c_cart/helper/apiparams.dart';
+import 'package:two_c_cart/helper/apiurldata.dart';
 import 'package:two_c_cart/helper/constants.dart';
+import 'package:two_c_cart/network/ApiCall.dart';
+import 'package:two_c_cart/notifiers/registernotifier.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -10,6 +15,18 @@ class RegisterScreen extends StatefulWidget {
 class _LoginState extends State<RegisterScreen> {
   bool _isObscure = true;
   String shopname;
+  RegisterUpdateNotifier _updateNotifier;
+  @override
+  void initState() {
+    _updateNotifier =
+        Provider.of<RegisterUpdateNotifier>(context, listen: false);
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _updateNotifier.reset();
+    super.dispose();
+  }
   Widget getTextFormUser() {
     return TextFormField(
       obscureText: false,
@@ -252,23 +269,57 @@ class _LoginState extends State<RegisterScreen> {
           child:getContent() ),
     );
   }
+  Future<void> register(String username,String phonenumber,String password,String refCode)
+  async {
+   _updateNotifier.isProgressShown = true;
+
+    Map body = {
+
+      USER_NAME:username,
+      REF_CODE:refCode,
+      PASSWORD:password,
+      PHONE_NUMBER: phonenumber,
+    };
+    ApiCall()
+        .execute<String, Null>(REGISTER_URL, body).then((String result){
+      _updateNotifier.isProgressShown = false;
+
+    });
+
+  }
 Widget getContent(){
-    return Container(
-      // height: MediaQuery.of(context).size.height,
-      color: Colors.white,
-      child: Column(
+    return
+      Stack(
         children: [
-          getTopBanner(context),
-          getTitle(),
-          getForms(),
-          getLoginButton(),
+          Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                // height: MediaQuery.of(context).size.height,
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      getTopBanner(context),
+                      getTitle(),
+                      getForms(),
+                      getRegisterButton(),
 
+                    ],
+                  )
+
+              )
+
+          ),
+          Align(alignment: Alignment.center,
+            child: Consumer<RegisterUpdateNotifier>(
+              builder: (context, value, child) {
+                return value.isProgressShown ? progressBar : SizedBox();
+              },
+            ),)
         ],
-      )
+      );
 
-    );
 }
- Widget getLoginButton(){
+ Widget getRegisterButton(){
     return Container(
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(top: 20,left: 30,right: 30,bottom: 20),

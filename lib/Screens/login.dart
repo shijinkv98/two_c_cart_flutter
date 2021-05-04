@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:two_c_cart/Screens/otp.dart';
 import 'package:two_c_cart/Screens/register.dart';
+import 'package:two_c_cart/helper/apiparams.dart';
+import 'package:two_c_cart/helper/apiurldata.dart';
 import 'package:two_c_cart/helper/constants.dart';
+import 'package:two_c_cart/network/ApiCall.dart';
+import 'package:two_c_cart/notifiers/loginnotifier.dart';
 
 import 'dashBoard.dart';
 
@@ -106,7 +111,18 @@ class _LoginState extends State<Login> {
           border: InputBorder.none,
         ));
   }
-
+  LoginUpdateNotifier _updateNotifier;
+  @override
+  void initState() {
+    _updateNotifier =
+        Provider.of<LoginUpdateNotifier>(context, listen: false);
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _updateNotifier.reset();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,21 +137,36 @@ class _LoginState extends State<Login> {
   }
 
   Widget getContent(){
-    return Container(
-      // height: MediaQuery.of(context).size.height,
-      color: Colors.white,
-      child: Column(
+    return
+      Stack(
         children: [
-          getTopBanner(context),
-          getTitle(),
-          getForms(),
-          getForgotPass(),
-          getLoginButton(),
-          getSignUp(),
-        ],
-      )
+          Align(
+            alignment: Alignment.topCenter,
+            child:
+            Container(
+            // height: MediaQuery.of(context).size.height,
+            color: Colors.white,
+            child: Column(
+              children: [
+                getTopBanner(context),
+                getTitle(),
+                getForms(),
+                getForgotPass(),
+                getLoginButton(),
+                getSignUp(),
+              ],
+            )
 
-    );
+    ),
+          ),
+          Align(alignment: Alignment.center,
+          child: Consumer<LoginUpdateNotifier>(
+            builder: (context, value, child) {
+              return value.isProgressShown ? progressBar : SizedBox();
+            },
+          ),)
+        ],
+      );
 }
 
   Widget getSignUp(){
@@ -174,7 +205,22 @@ class _LoginState extends State<Login> {
       ),
     );
  }
+  Future<void> login(String username,String password)
+  async {
+    _updateNotifier.isProgressShown = true;
 
+    Map body = {
+      // name,email,phone_number,password
+     USER_NAME: username,
+      PASSWORD: password.trim(),
+    };
+    ApiCall()
+        .execute<String, Null>(LOGIN_URL, body).then((String result){
+      _updateNotifier.isProgressShown = false;
+
+    });
+
+  }
   Widget getForgotPass(){
     return InkWell(
       onTap: (){

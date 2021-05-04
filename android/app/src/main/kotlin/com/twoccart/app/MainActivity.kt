@@ -1,4 +1,4 @@
-package com.2ccart.app
+package com.twoccart.app
 
 import io.flutter.embedding.android.FlutterActivity
 

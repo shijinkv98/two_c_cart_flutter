@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:two_c_cart/notifiers/loginnotifier.dart';
+import 'package:two_c_cart/notifiers/registernotifier.dart';
 
 import 'Screens/splashScreen.dart';
 import 'helper/constants.dart';
+import 'notifiers/cartnotifier.dart';
+import 'notifiers/dataupdatenotifier.dart';
 import 'notifiers/documents_notifier.dart';
+import 'notifiers/homenotifier.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,6 +22,21 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => DocsAddedNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => RegisterUpdateNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LoginUpdateNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HomeUpdateNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DataUpdateNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CartUpdateNotifier(),
         ),
       ],
         child: MaterialApp(

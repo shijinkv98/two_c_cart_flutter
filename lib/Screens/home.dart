@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +10,7 @@ import 'package:two_c_cart/helper/constants.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:two_c_cart/helper/file_model.dart';
 import 'package:two_c_cart/notifiers/documents_notifier.dart';
+import 'package:two_c_cart/notifiers/homenotifier.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -21,6 +22,20 @@ class _LoginState extends State<HomeScreen> {
   CountDownController _controller = CountDownController();
   int _duration = 360;
   String productOne;
+  HomeUpdateNotifier _updateNotifier;
+  @override
+  void initState() {
+    _updateNotifier =
+        Provider.of<HomeUpdateNotifier>(context, listen: false);
+    _docsAddedNotifier =
+        Provider.of<DocsAddedNotifier>(context, listen: false);
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _updateNotifier.reset();
+    super.dispose();
+  }
   DocsAddedNotifier _docsAddedNotifier;
 
   Widget getProductOne() {
@@ -96,12 +111,12 @@ class _LoginState extends State<HomeScreen> {
     );
   }
 
-  @override
-  void initState() {
-    _docsAddedNotifier =
-        Provider.of<DocsAddedNotifier>(context, listen: false);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   _docsAddedNotifier =
+  //       Provider.of<DocsAddedNotifier>(context, listen: false);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -355,18 +370,18 @@ class _LoginState extends State<HomeScreen> {
     return InkWell(
       onTap: ()  async{
         final _allowedDocuments = ['png', 'pdf', 'jpg'];
-        FilePickerResult result =
-        await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: _allowedDocuments,
-        );
-        if (result != null) {
-          _regstraionDoc = FileModel(
-              fileName: result.files.single.name,
-              imageStr: result.files.single.path,
-              imageU8L: result.files.single.bytes);
-          _docsAddedNotifier.docAdded();
-        }
+        // FilePickerResult result =
+        // await FilePicker.platform.pickFiles(
+        //   type: FileType.custom,
+        //   allowedExtensions: _allowedDocuments,
+        // );
+        // if (result != null) {
+        //   _regstraionDoc = FileModel(
+        //       fileName: result.files.single.name,
+        //       imageStr: result.files.single.path,
+        //       imageU8L: result.files.single.bytes);
+        //   _docsAddedNotifier.docAdded();
+        // }
 
       },
       child: Container(
