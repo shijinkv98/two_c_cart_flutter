@@ -5,7 +5,7 @@ import 'package:two_c_cart/Screens/home.dart';
 import 'package:two_c_cart/Screens/wholesale.dart';
 import 'package:two_c_cart/Screens/wholesaleValidation.dart';
 import 'package:two_c_cart/Screens/wishlist.dart';
-import 'package:two_c_cart/helper/color_item)view.dart';
+import 'package:two_c_cart/helper/color_itemview.dart';
 import 'package:two_c_cart/helper/constants.dart';
 
 class DashBoard extends StatefulWidget {

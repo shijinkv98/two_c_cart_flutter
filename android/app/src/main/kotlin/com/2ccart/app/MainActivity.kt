@@ -1,4 +1,4 @@
-package com.flutter.two_c_cart
+package com.2ccart.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.flutter.two_c_cart">
+    package="com.2ccart.app">
    <application
-        android:label="two_c_cart"
+       android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
