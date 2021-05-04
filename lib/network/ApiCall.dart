@@ -4,9 +4,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:two_c_cart/helper/apiparams.dart';
 import 'package:two_c_cart/helper/apiurldata.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:two_c_cart/network/responses/loginresponse.dart';
+import 'package:two_c_cart/network/responses/otpresponse.dart';
+import 'package:two_c_cart/network/responses/registerresponse.dart';
 class ApiCall{
   static const API_URL = "$BASE_URL";
   ApiCall._privateConstructor();
@@ -50,13 +54,16 @@ class ApiCall{
       params = Map();
     }
 
-    // var user = await ApiCall().getUser();
-    // if (user != null) {
-    //   if (user.token != null && user.token.trim().isNotEmpty) {
-    //     params.addAll({'token': user.token.trim()});
-    //     if (multipartRequest != null)
-    //       multipartRequest?.fields['token'] = user.token.trim();
-    //   }
+     var userToken = await ApiCall().getUserToken();
+    if (userToken != null) {
+      if (userToken != null && userToken
+          .trim()
+          .isNotEmpty) {
+        params.addAll({'user_token': userToken.trim()});
+        if (multipartRequest != null)
+          multipartRequest?.fields['user_token'] = userToken.trim();
+      }
+    }
     //   if (user.id != null && user.id.trim().isNotEmpty) {
     //     params.addAll({'id': user.id.toString()});
     //     if (multipartRequest != null)
@@ -95,15 +102,28 @@ class ApiCall{
     // int success = jsonResponse.containsKey('succes') ? jsonResponse['success'] : 1;
    // String success = jsonResponse['success']?.toString() ?? '1';
     showAlert(jsonResponse['alert_message']);
+
     return fromJson<T, K>(jsonResponse);
 
 
   }
 
-  Future saveUser(String userResponse) async {
+  Future saveUserToken(String usertoken) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //debugPrint('save user resp: $userResponse');
-    bool success = await prefs.setString('user', userResponse);
+    bool success = await prefs.setString(USER_TOKEN, usertoken);
+    return success;
+  }
+  Future saveUserName(String userName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //debugPrint('save user resp: $userResponse');
+    bool success = await prefs.setString(USER_NAME, userName);
+    return success;
+  }
+  Future saveUserMobile(String mobile) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //debugPrint('save user resp: $userResponse');
+    bool success = await prefs.setString("mobile", mobile);
     return success;
   }
   Future saveLoginResponse(String userResponse) async {
@@ -112,62 +132,80 @@ class ApiCall{
     bool success = await prefs.setString('login_response', userResponse);
     return success;
   }
-  Future saveHome(String userResponse) async {
+  Future<LoginResponse> getLoginResponse() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //debugPrint('save user resp: $userResponse');
-    bool success = await prefs.setString('user', userResponse);
-    return success;
+    String user =
+    prefs.getString('login_response') == null ? "" : prefs.getString('login_response');
+    if (user == null || user.trim().isEmpty) {
+      return null;
+    }
+    return LoginResponse.fromJson(json.decode(user == null ? "" : user));
   }
+  Future<String> getUserToken() async {
 
-  Future saveAdminPhone(String adminNo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //debugPrint('save admin phone NO: $adminNo');
-    bool success = await prefs.setString('admin_phone_no', adminNo);
-    return success;
+    return prefs.getString(USER_TOKEN);
+
   }
-  Future saveNotificationCount(String notificationCount) async {
+  Future<String> getUserName() async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //debugPrint('save admin phone NO: $adminNo');
-    bool success = await prefs.setString('notification_count', notificationCount);
-    return success;
+    return prefs.getString(USER_NAME);
+
   }
-  Future<String> getNotificationCount() async {
+  Future<String> getUserMobile() async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('notification_count');
+    return prefs.getString("mobile");
   }
-  Future saveCartCount(String cartCount) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //debugPrint('save admin phone NO: $adminNo');
-    bool success = await prefs.setString('cart_count', cartCount);
-    return success;
-  }
-  Future<String> getCartCount() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('cart_count');
-  }
-  Future saveWishListCount(String wishListCount) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //debugPrint('save admin phone NO: $adminNo');
-    bool success = await prefs.setString('wishList_count', wishListCount);
-    return success;
-  }
-  Future<String> getWishListCount() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('wishList_count');
-  }
-  Future<String> getAdminPhone() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('admin_phone_no');
-  }
-  // Future<LoginResponse> getLoginResponse() async {
+  // Future saveHome(String userResponse) async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String user =
-  //   prefs.getString('login_response') == null ? "" : prefs.getString('login_response');
-  //   if (user == null || user.trim().isEmpty) {
-  //     return null;
-  //   }
-  //   return LoginResponse.fromJson(json.decode(user == null ? "" : user));
+  //   //debugPrint('save user resp: $userResponse');
+  //   bool success = await prefs.setString('user', userResponse);
+  //   return success;
   // }
+  //
+  // Future saveAdminPhone(String adminNo) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   //debugPrint('save admin phone NO: $adminNo');
+  //   bool success = await prefs.setString('admin_phone_no', adminNo);
+  //   return success;
+  // }
+  // Future saveNotificationCount(String notificationCount) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   //debugPrint('save admin phone NO: $adminNo');
+  //   bool success = await prefs.setString('notification_count', notificationCount);
+  //   return success;
+  // }
+  // Future<String> getNotificationCount() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getString('notification_count');
+  // }
+  // Future saveCartCount(String cartCount) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   //debugPrint('save admin phone NO: $adminNo');
+  //   bool success = await prefs.setString('cart_count', cartCount);
+  //   return success;
+  // }
+  // Future<String> getCartCount() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getString('cart_count');
+  // }
+  // Future saveWishListCount(String wishListCount) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   //debugPrint('save admin phone NO: $adminNo');
+  //   bool success = await prefs.setString('wishList_count', wishListCount);
+  //   return success;
+  // }
+  // Future<String> getWishListCount() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getString('wishList_count');
+  // }
+  // Future<String> getAdminPhone() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getString('admin_phone_no');
+  // }
+
   // Future<UserData> getUser() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
   //   String user =
@@ -178,21 +216,18 @@ class ApiCall{
   //   return UserData.fromJson(json.decode(user == null ? "" : user));
   // }
 
-  Future<String> getUserToken() async {
-    String token;
-    // var user = await ApiCall().getUser();
-    // if (user != null && user.token != null && user.token.trim().isNotEmpty) {
-    //   token = user.token;
-    // }
-    return token;
-  }
+
 
   /// If T is a List, K is the subtype of the list.
   T fromJson<T, K>(dynamic json) {
     if (json is Iterable) {
       return _fromJsonList<K>(json) as T;
-    // } else if (T == SignupResponse) {
-    //   return SignupResponse.fromJson(json) as T;
+    } else if (T == RegisterResponse) {
+      return RegisterResponse.fromJson(json) as T;
+    } else if (T == LoginResponse) {
+      return LoginResponse.fromJson(json) as T;
+    } else if (T == OTPResponse) {
+      return OTPResponse.fromJson(json) as T;
       } else if (T == String) {
       return json.toString() as T;
     }

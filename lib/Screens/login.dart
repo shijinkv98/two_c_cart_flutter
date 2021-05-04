@@ -7,6 +7,7 @@ import 'package:two_c_cart/helper/apiparams.dart';
 import 'package:two_c_cart/helper/apiurldata.dart';
 import 'package:two_c_cart/helper/constants.dart';
 import 'package:two_c_cart/network/ApiCall.dart';
+import 'package:two_c_cart/network/responses/loginresponse.dart';
 import 'package:two_c_cart/notifiers/loginnotifier.dart';
 
 import 'dashBoard.dart';
@@ -18,49 +19,18 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool _isObscure = true;
-  String shopname;
+  String username;
+  final GlobalKey<FormState> _userNameKey = GlobalKey();
+  final GlobalKey<FormState> _passwordKey = GlobalKey();
+
   Widget getTextFormUser() {
-    return TextFormField(
-      obscureText: false,
-      autofocus: false,
-      onSaved: (value) {
-        shopname = value;
-      },
-      validator: (value) {
-        if (value.trim().isEmpty) {
-          return 'This field is required';
-        } else {
-          return null;
-        }
-      },
-      keyboardType: TextInputType.name,
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-        hintText: "User name",
-        // labelText: 'Shop name',
-        icon: Padding(
-          padding: EdgeInsets.only(
-              top: 0, bottom: 0, left: 10), // add padding to adjust icon
-          child: ImageIcon(
-            AssetImage("assets/images/user.png"),
-            size: 20,
-            color: colorPrimary,
-          ),
-        ),
-
-        border: InputBorder.none,
-      ),
-    );
-  }
-
-  String password;
-  Widget getTextFormPassWord() {
-    return TextFormField(
-        obscureText: _isObscure,
+    return Form(
+      key: _userNameKey,
+      child: TextFormField(
+        obscureText: false,
         autofocus: false,
         onSaved: (value) {
-          password = value;
+          username = value;
         },
         validator: (value) {
           if (value.trim().isEmpty) {
@@ -69,47 +39,87 @@ class _LoginState extends State<Login> {
             return null;
           }
         },
-        // keyboardType: TextInputType.done,
+        keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+          hintText: "User name",
           // labelText: 'Shop name',
-          hintText: 'Password',
-          suffixIconConstraints:  BoxConstraints(
-            minHeight: 20,
-            minWidth: 25,
-          ),
-          suffixIcon: InkWell(
-            onTap: () {
-              setState(() {
-                _isObscure = !_isObscure;
-              });
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: ImageIcon(
-                AssetImage(_isObscure
-                    ? ('assets/images/views.png')
-                    : ('assets/images/view.png')
-                ),
-                size: 20,
-                // color: colorPrimary,
-              ),
-            ),
-          ),
-          icon:
-          Padding(
+          icon: Padding(
             padding: EdgeInsets.only(
                 top: 0, bottom: 0, left: 10), // add padding to adjust icon
             child: ImageIcon(
-              AssetImage("assets/images/password.png"),
+              AssetImage("assets/images/user.png"),
               size: 20,
               color: colorPrimary,
             ),
           ),
 
           border: InputBorder.none,
-        ));
+        ),
+      ),
+    );
+  }
+
+  String password;
+  Widget getTextFormPassWord() {
+    return Form(
+      key: _passwordKey,
+      child: TextFormField(
+          obscureText: _isObscure,
+          autofocus: false,
+          onSaved: (value) {
+            password = value;
+          },
+          validator: (value) {
+            if (value.trim().isEmpty) {
+              return 'This field is required';
+            } else {
+              return null;
+            }
+          },
+          // keyboardType: TextInputType.done,
+          textInputAction: TextInputAction.next,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+            // labelText: 'Shop name',
+            hintText: 'Password',
+            suffixIconConstraints:  BoxConstraints(
+              minHeight: 20,
+              minWidth: 25,
+            ),
+            suffixIcon: InkWell(
+              onTap: () {
+                setState(() {
+                  _isObscure = !_isObscure;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: ImageIcon(
+                  AssetImage(_isObscure
+                      ? ('assets/images/views.png')
+                      : ('assets/images/view.png')
+                  ),
+                  size: 20,
+                  // color: colorPrimary,
+                ),
+              ),
+            ),
+            icon:
+            Padding(
+              padding: EdgeInsets.only(
+                  top: 0, bottom: 0, left: 10), // add padding to adjust icon
+              child: ImageIcon(
+                AssetImage("assets/images/password.png"),
+                size: 20,
+                color: colorPrimary,
+              ),
+            ),
+
+            border: InputBorder.none,
+          )),
+    );
   }
   LoginUpdateNotifier _updateNotifier;
   @override
@@ -191,7 +201,13 @@ class _LoginState extends State<Login> {
   Widget getLoginButton(){
     return InkWell(
       onTap: (){
-        NextPageReplacement(context,DashBoard());
+        if(_userNameKey.currentState.validate()&&_passwordKey.currentState.validate())
+          {
+            _userNameKey.currentState.save();
+            _passwordKey.currentState.save();
+            login(username, password);
+          }
+
               },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -215,8 +231,18 @@ class _LoginState extends State<Login> {
       PASSWORD: password.trim(),
     };
     ApiCall()
-        .execute<String, Null>(LOGIN_URL, body).then((String result){
+        .execute<LoginResponse, Null>(LOGIN_URL, body).then((LoginResponse result){
       _updateNotifier.isProgressShown = false;
+      if(result.success=="1")
+        {
+
+          ApiCall().saveUserToken(result.userToken);
+          ApiCall().saveLoginResponse(result.toJson().toString());
+          ApiCall().saveUserMobile(result.mobile);
+          ApiCall().saveUserName(result.username);
+
+          NextPageReplacement(context,DashBoard());
+        }
 
     });
 
