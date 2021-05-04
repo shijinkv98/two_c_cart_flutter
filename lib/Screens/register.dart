@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:two_c_cart/Screens/otp.dart';
 import 'package:two_c_cart/helper/apiparams.dart';
 import 'package:two_c_cart/helper/apiurldata.dart';
 import 'package:two_c_cart/helper/constants.dart';
 import 'package:two_c_cart/network/ApiCall.dart';
+import 'package:two_c_cart/network/responses/registerresponse.dart';
 import 'package:two_c_cart/notifiers/registernotifier.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -14,7 +16,11 @@ class RegisterScreen extends StatefulWidget {
 
 class _LoginState extends State<RegisterScreen> {
   bool _isObscure = true;
-  String shopname;
+  String username;
+  final GlobalKey<FormState> _userNameKey = GlobalKey();
+  final GlobalKey<FormState> _passwordKey = GlobalKey();
+  final GlobalKey<FormState> _phoneKey = GlobalKey();
+
   RegisterUpdateNotifier _updateNotifier;
   @override
   void initState() {
@@ -28,71 +34,77 @@ class _LoginState extends State<RegisterScreen> {
     super.dispose();
   }
   Widget getTextFormUser() {
-    return TextFormField(
-      obscureText: false,
-      autofocus: false,
-      onSaved: (value) {
-        shopname = value;
-      },
-      validator: (value) {
-        if (value.trim().isEmpty) {
-          return 'This field is required';
-        } else {
-          return null;
-        }
-      },
-      keyboardType: TextInputType.name,
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-        hintText: "Shop name",
-        // labelText: 'Shop name',
-        // icon: Padding(
-        //   padding: EdgeInsets.only(
-        //       top: 0, bottom: 0, left: 10), // add padding to adjust icon
-        //   child: ImageIcon(
-        //     AssetImage("assets/images/user.png"),
-        //     size: 20,
-        //     color: colorPrimary,
-        //   ),
-        // ),
+    return Form(
+      key: _userNameKey,
+      child: TextFormField(
+        obscureText: false,
+        autofocus: false,
+        onSaved: (value) {
+          username = value;
+        },
+        validator: (value) {
+          if (value.trim().isEmpty) {
+            return 'This field is required';
+          } else {
+            return null;
+          }
+        },
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+          hintText: "Shop name",
+          // labelText: 'Shop name',
+          // icon: Padding(
+          //   padding: EdgeInsets.only(
+          //       top: 0, bottom: 0, left: 10), // add padding to adjust icon
+          //   child: ImageIcon(
+          //     AssetImage("assets/images/user.png"),
+          //     size: 20,
+          //     color: colorPrimary,
+          //   ),
+          // ),
 
-        border: InputBorder.none,
+          border: InputBorder.none,
+        ),
       ),
     );
   }
   String phone;
   Widget getTextFormPhone() {
-    return TextFormField(
-      obscureText: false,
-      autofocus: false,
-      onSaved: (value) {
-        phone = value;
-      },
-      validator: (value) {
-        if (value.trim().isEmpty) {
-          return 'This field is required';
-        } else {
-          return null;
-        }
-      },
-      keyboardType: TextInputType.name,
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-        hintText: "Phone Number",
-        // labelText: 'Shop name',
-        // icon: Padding(
-        //   padding: EdgeInsets.only(
-        //       top: 0, bottom: 0, left: 10), // add padding to adjust icon
-        //   child: ImageIcon(
-        //     AssetImage("assets/images/user.png"),
-        //     size: 20,
-        //     color: colorPrimary,
-        //   ),
-        // ),
+    return Form(
+      key: _phoneKey,
+      child: TextFormField(
+        obscureText: false,
+        autofocus: false,
+        onSaved: (value) {
+          phone = value;
+        },
+        validator: (value) {
+          if (value.trim().isEmpty) {
+            return 'This field is required';
+          } else {
+            return null;
+          }
+        },
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+          hintText: "Phone Number",
+          // labelText: 'Shop name',
+          // icon: Padding(
+          //   padding: EdgeInsets.only(
+          //       top: 0, bottom: 0, left: 10), // add padding to adjust icon
+          //   child: ImageIcon(
+          //     AssetImage("assets/images/user.png"),
+          //     size: 20,
+          //     color: colorPrimary,
+          //   ),
+          // ),
 
-        border: InputBorder.none,
+          border: InputBorder.none,
+        ),
       ),
     );
   }
@@ -102,7 +114,7 @@ class _LoginState extends State<RegisterScreen> {
     return TextFormField(
       obscureText: false,
       autofocus: false,
-      onSaved: (value) {
+      onChanged: (value) {
         referral = value;
       },
       validator: (value) {
@@ -135,60 +147,63 @@ class _LoginState extends State<RegisterScreen> {
 
   String password;
   Widget getTextFormPassWord() {
-    return TextFormField(
-        obscureText: _isObscure,
-        autofocus: false,
-        onSaved: (value) {
-          password = value;
-        },
-        validator: (value) {
-          if (value.trim().isEmpty) {
-            return 'This field is required';
-          } else {
-            return null;
-          }
-        },
-        // keyboardType: TextInputType.done,
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-          // labelText: 'Shop name',
-          hintText: 'Confirm Password',
-          suffixIconConstraints:  BoxConstraints(
-            minHeight: 20,
-            minWidth: 25,
-          ),
-          suffixIcon: InkWell(
-            onTap: () {
-              setState(() {
-                _isObscure = !_isObscure;
-              });
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: ImageIcon(
-                AssetImage(_isObscure
-                    ? ('assets/images/views.png')
-                    : ('assets/images/view.png')
+    return Form(
+      key: _passwordKey,
+      child: TextFormField(
+          obscureText: _isObscure,
+          autofocus: false,
+          onSaved: (value) {
+            password = value;
+          },
+          validator: (value) {
+            if (value.trim().isEmpty) {
+              return 'This field is required';
+            } else {
+              return null;
+            }
+          },
+          // keyboardType: TextInputType.done,
+          textInputAction: TextInputAction.next,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+            // labelText: 'Shop name',
+            hintText: 'Confirm Password',
+            suffixIconConstraints:  BoxConstraints(
+              minHeight: 20,
+              minWidth: 25,
+            ),
+            suffixIcon: InkWell(
+              onTap: () {
+                setState(() {
+                  _isObscure = !_isObscure;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: ImageIcon(
+                  AssetImage(_isObscure
+                      ? ('assets/images/views.png')
+                      : ('assets/images/view.png')
+                  ),
+                  size: 20,
+                  // color: colorPrimary,
                 ),
-                size: 20,
-                // color: colorPrimary,
               ),
             ),
-          ),
-          // icon:
-          // Padding(
-          //   padding: EdgeInsets.only(
-          //       top: 0, bottom: 0, left: 10), // add padding to adjust icon
-          //   child: ImageIcon(
-          //     AssetImage("assets/images/password.png"),
-          //     size: 20,
-          //     color: colorPrimary,
-          //   ),
-          // ),
+            // icon:
+            // Padding(
+            //   padding: EdgeInsets.only(
+            //       top: 0, bottom: 0, left: 10), // add padding to adjust icon
+            //   child: ImageIcon(
+            //     AssetImage("assets/images/password.png"),
+            //     size: 20,
+            //     color: colorPrimary,
+            //   ),
+            // ),
 
-          border: InputBorder.none,
-        ));
+            border: InputBorder.none,
+          )),
+    );
   }
   String repassword;
   Widget getTextFormRePassWord() {
@@ -281,8 +296,13 @@ class _LoginState extends State<RegisterScreen> {
       PHONE_NUMBER: phonenumber,
     };
     ApiCall()
-        .execute<String, Null>(REGISTER_URL, body).then((String result){
+        .execute<RegisterResponse, Null>(REGISTER_URL, body).then((RegisterResponse result){
       _updateNotifier.isProgressShown = false;
+      if(result.success=="1")
+      {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (BuildContext context) => OtpScreen()));
+      }
 
     });
 
@@ -320,15 +340,26 @@ Widget getContent(){
 
 }
  Widget getRegisterButton(){
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.only(top: 20,left: 30,right: 30,bottom: 20),
-      padding: EdgeInsets.only(top: 13,bottom: 13),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: loginButtonColor
+    return InkWell(
+      onTap: (){
+        if(_userNameKey.currentState.validate()&&_passwordKey.currentState.validate()&&_phoneKey.currentState.validate())
+        {
+          _userNameKey.currentState.save();
+          _passwordKey.currentState.save();
+          _phoneKey.currentState.save();
+          register(username,phone, password,referral);
+        }
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.only(top: 20,left: 30,right: 30,bottom: 20),
+        padding: EdgeInsets.only(top: 13,bottom: 13),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: loginButtonColor
+        ),
+        child: Center(child: Text('LOGIN',style: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'opensans_bold',letterSpacing: 0.5),)),
       ),
-      child: Center(child: Text('LOGIN',style: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'opensans_bold',letterSpacing: 0.5),)),
     );
  }
 

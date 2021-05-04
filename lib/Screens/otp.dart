@@ -1,20 +1,40 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:two_c_cart/Screens/PinFiels.dart';
 import 'package:two_c_cart/Screens/register.dart';
 import 'package:two_c_cart/helper/apiparams.dart';
 import 'package:two_c_cart/helper/apiurldata.dart';
 import 'package:two_c_cart/helper/constants.dart';
 import 'package:two_c_cart/network/ApiCall.dart';
+import 'package:two_c_cart/network/responses/otpresponse.dart';
+import 'package:two_c_cart/notifiers/dataupdatenotifier.dart';
+
+import 'dashBoard.dart';
 
 class OtpScreen extends StatefulWidget {
+  String phone;
+  OtpScreen({this.phone});
   @override
-  _LoginState createState() => _LoginState();
+  _OTPState createState() => _OTPState(phone: phone);
 }
 
-class _LoginState extends State<OtpScreen> {
+class _OTPState extends State<OtpScreen> {
 
-
+  String phone;
+  _OTPState({this.phone});
+  DataUpdateNotifier _updateNotifier;
+  @override
+  void initState() {
+    _updateNotifier =
+        Provider.of<DataUpdateNotifier>(context, listen: false);
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _updateNotifier.reset();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,23 +60,39 @@ class _LoginState extends State<OtpScreen> {
   }
 
   Widget getContent(){
-    return Container(
-      // height: MediaQuery.of(context).size.height,
-      color: Colors.white,
-      child: Column(
+    return
+      Stack(
         children: [
-          getTopBanner(context),
-          getTitle(),
-          getForgotPassTitle(),
-          getOtp(),
-          getLoginButton(),
-          getResendOtp(),
+          Align(
+              alignment: Alignment.topCenter,
+              child:Container(
+                // height: MediaQuery.of(context).size.height,
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      getTopBanner(context),
+                      getTitle(),
+                      getForgotPassTitle(),
+                      getOtp(),
+                      getOtpButton(),
+                      getResendOtp(),
+                    ],
+                  )
+
+              )
+
+          ),
+          Align(alignment: Alignment.center,
+            child: Consumer<DataUpdateNotifier>(
+              builder: (context, value, child) {
+                return value.isProgressShown ? progressBar : SizedBox();
+              },
+            ),)
         ],
-      )
+      );
 
-    );
 }
-
+String otp;
   Widget getOtp(){
     return Container(
       margin: EdgeInsets.only(top: 25,left: 45,right: 45,bottom: 35),
@@ -70,7 +106,7 @@ class _LoginState extends State<OtpScreen> {
 
         style: TextStyle(fontSize: 25),
         onCompleted: (pin) {
-          // _otpNotifier.otpWithoutNotify = pin;
+          otp=pin;
           print("Completed: " + pin);
         },
         onChanged: (value) {
@@ -81,7 +117,7 @@ class _LoginState extends State<OtpScreen> {
   }
   Future<void> otpVerify(String otp,String phonenumber)
   async {
-    // _updateNotifier.isProgressShown = true;
+    _updateNotifier.isProgressShown = true;
 
     Map body = {
       // name,email,phone_number,password
@@ -89,9 +125,14 @@ class _LoginState extends State<OtpScreen> {
       PHONE_NUMBER: phonenumber,
     };
     ApiCall()
-        .execute<String, Null>(OTP_VERIFICATION_URL, body).then((String result){
-      //  _updateNotifier.isProgressShown = false;
+        .execute<OTPResponse, Null>(OTP_VERIFICATION_URL, body).then((OTPResponse result){
+        _updateNotifier.isProgressShown = false;
 
+        ApiCall().saveUserToken(result.usertoken);
+        ApiCall().saveLoginResponse(result.toJson().toString());
+        ApiCall().saveUserMobile(result.mobile);
+        ApiCall().saveUserName(result.username);
+        NextPageReplacement(context,DashBoard());
     });
 
   }
@@ -120,16 +161,25 @@ class _LoginState extends State<OtpScreen> {
     );
 }
 
-  Widget getLoginButton(){
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.only(top: 20,left: 30,right: 30),
-      padding: EdgeInsets.only(top: 13,bottom: 13),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: loginButtonColor
+  Widget getOtpButton(){
+    return InkWell(
+      onTap: (){
+        if(otp!=null&&otp.length>3)
+          otpVerify(otp, phone);
+        else
+          ApiCall().showToast("Enter valid otp");
+
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.only(top: 20,left: 30,right: 30),
+        padding: EdgeInsets.only(top: 13,bottom: 13),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: loginButtonColor
+        ),
+        child: Center(child: Text('VERIFY',style: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'opensans_bold',letterSpacing: 0.5),)),
       ),
-      child: Center(child: Text('VERIFY',style: TextStyle(color: Colors.white,fontSize: 18,fontFamily: 'opensans_bold',letterSpacing: 0.5),)),
     );
  }
 
